@@ -25,15 +25,13 @@ public class SpitterRepositoryTest {
 
     @Test
     public void count(){
-//        assertNotNull(spitterRepository);
         assertEquals(4,spitterRepository.count());
     }
 
     @Test
     public void findAll() {
         List<Spitter> spitters = spitterRepository.findAll();
-        System.out.println(spitters.size());
-//        assertEquals(4, spitters.size());
+        assertEquals(4, spitters.size());
     }
 
 }

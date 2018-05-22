@@ -6,8 +6,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
@@ -17,8 +22,12 @@ import java.util.Properties;
  * @date: 2018/5/21 21:59
  */
 @Configuration
+@EnableTransactionManagement
 @ComponentScan(basePackages = "spittr")
-public class RepositoryConfig {
+public class RepositoryConfig implements TransactionManagementConfigurer {
+
+    @Inject
+    private SessionFactory sessionFactory;
 
     @Bean
     public DataSource dataSource(){
@@ -59,4 +68,10 @@ public class RepositoryConfig {
     }
 
 
+    @Override
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        HibernateTransactionManager transactionManager=new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory(dataSource()));
+        return transactionManager;
+    }
 }

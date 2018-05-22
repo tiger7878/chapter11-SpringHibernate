@@ -34,4 +34,10 @@ public class SpitterRepositoryTest {
         assertEquals(4, spitters.size());
     }
 
+    @Test
+    public void findOne(){
+        Spitter spitter=spitterRepository.findOne(1L);
+        assertEquals("habuma",spitter.getUsername());
+    }
+
 }
